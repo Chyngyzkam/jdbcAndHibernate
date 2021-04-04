@@ -1,5 +1,6 @@
 package peaksoft;
 
+import org.hibernate.Session;
 import peaksoft.dao.UserDao;
 import peaksoft.dao.UserDaoHibernateImpl;
 import peaksoft.model.User;
@@ -31,10 +32,14 @@ public class Main {
 
         UserDao userDao = new UserDaoHibernateImpl();
 
-        userDao.createUsersTable();
+       // userDao.createUsersTable();
         userDao.saveUser("Chyngyz", "Kamarov", (byte) 32);
-        userDao.saveUser("soli", "Saddilaev", (byte) 29);
-        userDao.getAllUsers();
+        userDao.saveUser("Aman", "Janykulov", (byte) 23);
+       userDao.getAllUsers();
+//        userDao.removeUserById(1);
+//         userDao.dropUsersTable();
+//        userDao.cleanUsersTable();
+
 
 
 

@@ -9,7 +9,7 @@ public interface UserDao {
 
     void createUsersTable();
 
-    void dropUsersTable(Session getSessionFactory);
+    void dropUsersTable();
 
     void saveUser(String name, String lastName, byte age);
 

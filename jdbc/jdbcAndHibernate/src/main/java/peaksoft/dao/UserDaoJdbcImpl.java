@@ -1,15 +1,17 @@
 package peaksoft.dao;
 
-import org.hibernate.Session;
+
 import peaksoft.model.User;
-import peaksoft.util.Util;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static peaksoft.util.Util.connect;
+
 public class UserDaoJdbcImpl implements UserDao {
-    Util connection = new Util();
+
 
     public UserDaoJdbcImpl() {
 
@@ -20,7 +22,7 @@ public class UserDaoJdbcImpl implements UserDao {
                 "id serial primary key,name varchar (40) not null,"+
                 "lastName varchar (40) not null ,"+
                 "age integer not null)";
-        try (Connection conn = connection.connect();
+        try (Connection conn =connect();
              Statement stmt = conn.createStatement()){
             stmt.executeUpdate(createTable);
             System.out.println("added Table");
@@ -31,9 +33,9 @@ public class UserDaoJdbcImpl implements UserDao {
 
     }
 
-    public void dropUsersTable(Session getSessionFactory) {
+    public void dropUsersTable() {
         String dropTable = "drop table if  exists users";
-        try (Connection conn = connection.connect();
+        try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(dropTable)) {
             stmt.executeUpdate();
             System.out.println("deleted Table");
@@ -46,7 +48,7 @@ public class UserDaoJdbcImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String addUser = "insert into users(name, lastName,age )" +
                 "values (?,?,?)";
-        try (Connection conn = connection.connect();
+        try (Connection conn =connect();
              PreparedStatement stmt = conn.prepareStatement(addUser)) {
             stmt.setString(1, name);
             stmt.setString(2, lastName);
@@ -60,7 +62,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
     public void removeUserById(long id) {
         String delete = "delete from users where id= ?";
-        try (Connection conn = connection.connect();
+        try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(delete)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
@@ -74,7 +76,7 @@ public class UserDaoJdbcImpl implements UserDao {
     public List<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         String getAll = "select * from users";
-        try (Connection conn = connection.connect();
+        try (Connection conn =connect();
              Statement stmt = conn.createStatement();
              ResultSet resSet = stmt.executeQuery(getAll)){
             while (resSet.next()) {
@@ -94,7 +96,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
     public void cleanUsersTable() {
         String clean ="delete from users";
-        try(Connection conn = connection.connect();
+        try(Connection conn =connect();
             PreparedStatement stmt = conn.prepareStatement(clean)){
             stmt.executeUpdate();
             System.out.println("Deleted all users");
